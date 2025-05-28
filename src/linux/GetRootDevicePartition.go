@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	InitService "github.com/Continu-OS/InitService/src"
 )
 
-func GetRootDevice() (string, error) {
+func GetRootDevicePartition() (InitService.RootPartition, error) {
 	f, err := os.Open("/proc/mounts")
 	if err != nil {
 		return "", err
@@ -19,7 +21,7 @@ func GetRootDevice() (string, error) {
 		line := scanner.Text()
 		fields := strings.Fields(line)
 		if len(fields) >= 2 && fields[1] == "/" {
-			return fields[0], nil
+			return InitService.RootPartition(fields[0]), nil
 		}
 	}
 	if err := scanner.Err(); err != nil {

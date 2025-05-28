@@ -1,4 +1,4 @@
-package config
+package InitService
 
 // Gibt den Path für die Festplattenvalidierungsdatei an
 const HostSystemRootDriveValidationFilePath = "/var/lib/initsrvc/rootdisk.verify"

@@ -1,16 +1,21 @@
-package linux
+package firmware
 
 import (
+	"log"
 	"os"
 	"strings"
+
+	InitService "github.com/Continu-OS/InitService/src"
 )
 
 // GetAllBootloaderParameters liest alle Boot-Parameter aus /proc/cmdline aus
-func GetAllBootloaderParameters() (map[string]string, error) {
+func GetAllBootloaderParameters() (InitService.BootloaderStartParameters, error) {
 	data, err := os.ReadFile("/proc/cmdline")
 	if err != nil {
 		return nil, err
 	}
+
+	log.Println("Extracting Bootloader Arguments")
 
 	cmdline := string(data)
 	params := strings.Fields(cmdline)

@@ -12,6 +12,12 @@ func StartReapZombieProcessesHandler() error {
 	signal.Notify(sigchld, syscall.SIGCHLD)
 
 	go func() {
+		defer func() {
+			log.Println("Zombie Process reaper was started")
+		}()
+
+		log.Println("Zombie Process reaper was started")
+
 		for range sigchld {
 			for {
 				var status syscall.WaitStatus

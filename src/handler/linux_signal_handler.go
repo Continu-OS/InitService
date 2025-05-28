@@ -19,6 +19,12 @@ func StartHostKernelSIGNALHandler() error {
 	)
 
 	go func() {
+		defer func() {
+			log.Println("Kernel Signal handler was stoped")
+		}()
+
+		log.Println("Kernel Signal handler was started")
+
 		for sig := range signals {
 			log.Printf("Initdienst empfängt Signal: %v", sig)
 			switch sig {

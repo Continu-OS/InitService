@@ -3,14 +3,16 @@ package linux
 import (
 	"fmt"
 	"os/exec"
+
+	InitService "github.com/Continu-OS/InitService/src"
 )
 
-func ResizeRootDriveIfNeeded(device, partition string) error {
-	devSize, err := GetSizeBytes(device)
+func ResizeRootDriveIfNeeded(device InitService.MemoryDevice, partition InitService.MemoryPartition) error {
+	devSize, err := GetSizeBytes(string(device))
 	if err != nil {
 		return fmt.Errorf("device size auslesen fehlgeschlagen: %v", err)
 	}
-	partSize, err := GetSizeBytes(partition)
+	partSize, err := GetSizeBytes(string(partition))
 	if err != nil {
 		return fmt.Errorf("partition size auslesen fehlgeschlagen: %v", err)
 	}
@@ -26,12 +28,12 @@ func ResizeRootDriveIfNeeded(device, partition string) error {
 		}
 
 		// Partition erweitern
-		if err := exec.Command("growpart", device, partNum).Run(); err != nil {
+		if err := exec.Command("growpart", string(device), partNum).Run(); err != nil {
 			return fmt.Errorf("growpart fehlgeschlagen: %v", err)
 		}
 
 		// ext4-Dateisystem anpassen
-		if err := exec.Command("resize2fs", partition).Run(); err != nil {
+		if err := exec.Command("resize2fs", string(partition)).Run(); err != nil {
 			return fmt.Errorf("resize2fs fehlgeschlagen: %v", err)
 		}
 
